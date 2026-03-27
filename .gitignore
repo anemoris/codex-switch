@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# Go build artifacts
+/codex-switch
+/bin/
+/dist/
+/release/
+*.test
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Coverage output
+/coverage.out
+/coverage.html
+
+# Local release artifacts
+/codex-switch-v*.tar.gz
+
+# Local docs
+/doc/
+/docs/
+
+# Local AI assistant metadata
+/.codex/
+/.cursor/
+/.claude/
+/.windsurf/
+
+# Local codex-switch data used during manual testing
+/.codex-switch/
