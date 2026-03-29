@@ -34,6 +34,7 @@ func newTestApp(t *testing.T, cmdRunner *recordingRunner) (*App, string) {
 	t.Helper()
 	root := t.TempDir()
 	t.Setenv("CODEX_SWITCH_HOME", root)
+	prependFakeCodexToPath(t)
 	store, err := config.NewDefaultStore()
 	if err != nil {
 		t.Fatal(err)
@@ -42,6 +43,16 @@ func newTestApp(t *testing.T, cmdRunner *recordingRunner) (*App, string) {
 	var stderr bytes.Buffer
 	app := New(store, cmdRunner, "test", strings.NewReader(""), &stdout, &stderr)
 	return app, root
+}
+
+func prependFakeCodexToPath(t *testing.T) {
+	t.Helper()
+	binDir := t.TempDir()
+	codexPath := filepath.Join(binDir, "codex")
+	if err := os.WriteFile(codexPath, []byte("#!/bin/sh\nexit 0\n"), 0o755); err != nil {
+		t.Fatalf("write fake codex: %v", err)
+	}
+	t.Setenv("PATH", binDir+string(os.PathListSeparator)+os.Getenv("PATH"))
 }
 
 func loadTestConfig(t *testing.T, root string) config.Config {
