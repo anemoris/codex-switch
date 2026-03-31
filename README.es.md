@@ -41,7 +41,7 @@ Si quieres compilar desde el código fuente, la forma más simple es usar el `Ma
 make build
 ```
 
-Eso inyecta automáticamente la versión `dev`. Si quieres compilar una versión concreta:
+Si el commit actual coincide exactamente con un Git tag, ese tag se usa como versión de compilación. En caso contrario, se usa `dev`. Si quieres compilar una versión concreta manualmente:
 
 ```sh
 make build VERSION=v1.0.0

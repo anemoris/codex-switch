@@ -41,7 +41,7 @@ To build from source, the included `Makefile` is the easiest way:
 make build
 ```
 
-That injects the `dev` version string automatically. To build a specific version:
+If the current commit is exactly on a Git tag, that tag is used as the build version. Otherwise it falls back to `dev`. To build a specific version manually:
 
 ```sh
 make build VERSION=v1.0.0

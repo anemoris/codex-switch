@@ -41,7 +41,7 @@ brew install anemoris/tap/codex-switch
 make build
 ```
 
-这样会自动注入 `dev` 版本号。想指定版本号的话：
+如果当前 commit 正好落在 Git tag 上，就会自动使用这个 tag 作为构建版本；否则回退到 `dev`。想手工指定版本号的话：
 
 ```sh
 make build VERSION=v1.0.0

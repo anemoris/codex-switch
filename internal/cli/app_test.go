@@ -1092,6 +1092,28 @@ func TestVersionOutput(t *testing.T) {
 	}
 }
 
+func TestVersionOutputStripsLeadingVFromSemverTags(t *testing.T) {
+	cmdRunner := &recordingRunner{}
+	root := t.TempDir()
+	t.Setenv("CODEX_SWITCH_HOME", root)
+	prependFakeCodexToPath(t)
+	store, err := config.NewDefaultStore()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	app := New(store, cmdRunner, "v1.2.3", strings.NewReader(""), &stdout, &stderr)
+
+	if err := app.Run([]string{"version"}); err != nil {
+		t.Fatalf("version: %v", err)
+	}
+	if got := strings.TrimSpace(stdout.String()); got != "1.2.3" {
+		t.Fatalf("unexpected version output: %q", got)
+	}
+}
+
 func TestEnvOutputForDefaultProfile(t *testing.T) {
 	cmdRunner := &recordingRunner{}
 	app, root := newTestApp(t, cmdRunner)
