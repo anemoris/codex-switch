@@ -29,7 +29,13 @@ internal/shellinit/    # shell 초기화 스니펫 설치/제거
 
 ## 설치
 
-가장 간단한 방법은 저장소에 들어 있는 `Makefile` 을 쓰는 것입니다.
+Homebrew 로 설치:
+
+```sh
+brew install anemoris/tap/codex-switch
+```
+
+소스에서 직접 빌드하려면 저장소에 들어 있는 `Makefile` 을 쓰는 것이 가장 간단합니다.
 
 ```sh
 make build
@@ -65,23 +71,23 @@ make vet
 
 ## Homebrew
 
-이 CLI 를 Homebrew 로 배포한다면 보통 흐름은 이렇습니다.
+`codex-switch` 는 `anemoris/tap` Homebrew tap 에 배포되어 있습니다.
 
 ```sh
-brew install <tap>/codex-switch
+brew install anemoris/tap/codex-switch
 codex-switch doctor
 ```
 
 자주 쓰는 라이프사이클 명령:
 
 ```sh
-brew upgrade codex-switch
+brew upgrade anemoris/tap/codex-switch
 brew uninstall codex-switch
 ```
 
 참고:
 
-- `<tap>` 은 실제 배포하는 tap 이름으로 바꾸면 됩니다. 예: `your-org/tap`
+- tap 저장소 주소는 `anemoris/homebrew-tap` 입니다.
 - `brew uninstall codex-switch` 는 Homebrew 가 관리하는 바이너리만 제거합니다.
 - shell 초기화 스니펫이나 `~/.codex-switch`, `CODEX_SWITCH_HOME` 아래 데이터는 지우지 않습니다.
 - shell 통합만 지우려면 `codex-switch cleanup` 을, 관리 데이터까지 지우려면 `codex-switch cleanup --purge-data` 를 사용하세요.

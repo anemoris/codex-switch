@@ -29,7 +29,13 @@ internal/shellinit/    # instalación/desinstalación de snippets de inicializac
 
 ## Instalación
 
-La forma más simple de compilar es usar el `Makefile` incluido:
+Instalar con Homebrew:
+
+```sh
+brew install anemoris/tap/codex-switch
+```
+
+Si quieres compilar desde el código fuente, la forma más simple es usar el `Makefile` incluido:
 
 ```sh
 make build
@@ -65,23 +71,23 @@ make vet
 
 ## Homebrew
 
-Si distribuyes esta CLI con Homebrew, el flujo normal sería algo así:
+`codex-switch` ya está publicado en el tap de Homebrew `anemoris/tap`:
 
 ```sh
-brew install <tap>/codex-switch
+brew install anemoris/tap/codex-switch
 codex-switch doctor
 ```
 
 Comandos habituales del ciclo de vida:
 
 ```sh
-brew upgrade codex-switch
+brew upgrade anemoris/tap/codex-switch
 brew uninstall codex-switch
 ```
 
 Notas:
 
-- Sustituye `<tap>` por el tap real que publiques, por ejemplo `your-org/tap`.
+- El repositorio del tap es `anemoris/homebrew-tap`.
 - `brew uninstall codex-switch` elimina el binario gestionado por Homebrew.
 - No borra snippets de inicialización del shell ni datos del usuario bajo `~/.codex-switch` o `CODEX_SWITCH_HOME`.
 - Usa `codex-switch cleanup` para quitar la integración con el shell, y `codex-switch cleanup --purge-data` si también quieres borrar los datos gestionados.
