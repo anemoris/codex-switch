@@ -1,4 +1,4 @@
-VERSION ?= dev
+VERSION ?= $(shell tag=$$(git describe --tags --exact-match 2>/dev/null || true); if [ -n "$$tag" ]; then echo "$$tag"; else echo dev; fi)
 
 .PHONY: build test vet clean
 

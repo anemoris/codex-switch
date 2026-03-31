@@ -21,7 +21,7 @@ func New(store *config.Store, cmdRunner runner.Runner, version string, stdin io.
 	return &App{
 		store:   store,
 		runner:  cmdRunner,
-		version: version,
+		version: normalizeVersion(version),
 		stdin:   stdin,
 		stdout:  stdout,
 		stderr:  stderr,

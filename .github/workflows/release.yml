@@ -1,0 +1,114 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release And Update Tap
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate tag and derive release metadata
+        id: meta
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          case "$tag" in
+            v[0-9]*)
+              ;;
+            *)
+              echo "Unsupported tag format: $tag" >&2
+              exit 1
+              ;;
+          esac
+
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
+          echo "tarball_url=https://github.com/${GITHUB_REPOSITORY}/archive/refs/tags/${tag}.tar.gz" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Run tests
+        run: go test ./...
+
+      - name: Build release binary
+        run: go build -ldflags "-X main.version=${{ steps.meta.outputs.tag }}" -o codex-switch ./cmd/codex-switch
+
+      - name: Create GitHub release if missing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists."
+          else
+            gh release create "$TAG" --title "$TAG" --generate-notes
+          fi
+
+      - name: Download source tarball and compute SHA256
+        id: source
+        env:
+          TARBALL_URL: ${{ steps.meta.outputs.tarball_url }}
+        run: |
+          curl -fsSL -o source.tar.gz "$TARBALL_URL"
+          echo "sha256=$(sha256sum source.tar.gz | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
+
+      - name: Check tap token
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          if [ -z "$HOMEBREW_TAP_TOKEN" ]; then
+            echo "Missing required secret: HOMEBREW_TAP_TOKEN" >&2
+            exit 1
+          fi
+
+      - name: Checkout Homebrew tap
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/homebrew-tap
+          path: homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+
+      - name: Render formula
+        run: |
+          mkdir -p homebrew-tap/Formula
+          bash scripts/render-homebrew-formula.sh \
+            "${GITHUB_REPOSITORY_OWNER}" \
+            "${GITHUB_REPOSITORY#*/}" \
+            "${{ steps.meta.outputs.tag }}" \
+            "${{ steps.source.outputs.sha256 }}" \
+            > homebrew-tap/Formula/codex-switch.rb
+
+      - name: Commit and push tap update
+        working-directory: homebrew-tap
+        env:
+          TAG: ${{ steps.meta.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- Formula/codex-switch.rb; then
+            echo "Formula already up to date."
+            exit 0
+          fi
+
+          git add Formula/codex-switch.rb
+          git commit -m "Update codex-switch to ${TAG}"
+          git push

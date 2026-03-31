@@ -41,7 +41,7 @@ brew install anemoris/tap/codex-switch
 make build
 ```
 
-これで `dev` バージョン文字列が自動で埋め込まれます。特定のバージョンを指定したい場合は次の通りです。
+現在の commit がちょうど Git tag 上にある場合は、その tag がビルド版として使われます。そうでない場合は `dev` にフォールバックします。手動で特定のバージョンを指定したい場合は次の通りです。
 
 ```sh
 make build VERSION=v1.0.0
