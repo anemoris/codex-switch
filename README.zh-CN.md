@@ -29,7 +29,13 @@ internal/shellinit/    # shell 初始化片段安装/卸载
 
 ## 安装
 
-最省事的方式是直接用仓库自带的 `Makefile`：
+用 Homebrew 安装：
+
+```sh
+brew install anemoris/tap/codex-switch
+```
+
+如果要从源码构建，最省事的方式是直接用仓库自带的 `Makefile`：
 
 ```sh
 make build
@@ -65,23 +71,23 @@ make vet
 
 ## Homebrew
 
-如果你准备用 Homebrew 分发这个 CLI，常见流程大概是这样：
+`codex-switch` 已经发布在 `anemoris/tap` 这个 Homebrew tap 里：
 
 ```sh
-brew install <tap>/codex-switch
+brew install anemoris/tap/codex-switch
 codex-switch doctor
 ```
 
 常用生命周期命令：
 
 ```sh
-brew upgrade codex-switch
+brew upgrade anemoris/tap/codex-switch
 brew uninstall codex-switch
 ```
 
 说明：
 
-- 把 `<tap>` 换成你实际发布的 tap 名称，比如 `your-org/tap`。
+- tap 仓库地址是 `anemoris/homebrew-tap`。
 - `brew uninstall codex-switch` 只会删掉 Homebrew 管理的二进制。
 - 它不会删除 shell 初始化片段，也不会删除 `~/.codex-switch` 或 `CODEX_SWITCH_HOME` 下的数据。
 - 想移除 shell 集成，用 `codex-switch cleanup`；连受管数据一起删，用 `codex-switch cleanup --purge-data`。

@@ -29,7 +29,13 @@ internal/shellinit/    # shell 初期化スニペットの追加/削除
 
 ## インストール
 
-いちばん手軽なのは、付属の `Makefile` を使う方法です。
+Homebrew でインストールする場合:
+
+```sh
+brew install anemoris/tap/codex-switch
+```
+
+ソースからビルドするなら、いちばん手軽なのは付属の `Makefile` を使う方法です。
 
 ```sh
 make build
@@ -65,23 +71,23 @@ make vet
 
 ## Homebrew
 
-この CLI を Homebrew で配布するなら、基本的な流れはこんな形です。
+`codex-switch` は `anemoris/tap` の Homebrew tap で公開されています。
 
 ```sh
-brew install <tap>/codex-switch
+brew install anemoris/tap/codex-switch
 codex-switch doctor
 ```
 
 よく使うライフサイクルコマンド:
 
 ```sh
-brew upgrade codex-switch
+brew upgrade anemoris/tap/codex-switch
 brew uninstall codex-switch
 ```
 
 補足:
 
-- `<tap>` は実際に公開する tap 名に置き換えてください。例: `your-org/tap`
+- tap リポジトリは `anemoris/homebrew-tap` です。
 - `brew uninstall codex-switch` で削除されるのは Homebrew 管理下のバイナリだけです。
 - shell 初期化スニペットや `~/.codex-switch`、`CODEX_SWITCH_HOME` 配下のデータは残ります。
 - shell 連携だけ消すなら `codex-switch cleanup`、データも消すなら `codex-switch cleanup --purge-data` を使ってください。
