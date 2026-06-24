@@ -139,6 +139,7 @@ codex-switch set-default <name>
 codex-switch run [<profile>] [-- command args...]
 codex-switch login [<profile>] [--copy-from-current] [-- command args...]
 codex-switch import-auth <profile> [--from path]
+codex-switch sync-skills [<profile>|--all] [<skill> ...|--all-skills]
 codex-switch env [<profile>] [--shell sh|bash|zsh|fish]
 codex-switch aliases [--shell bash|zsh|fish]
 codex-switch init-shell [--shell bash|zsh|fish] [--rc-file path]
@@ -170,6 +171,16 @@ codex-switch login personal --copy-from-current
 codex-switch import-auth work --from ~/.codex/auth.json
 codex-switch import-auth personal --from /path/to/old-codex-home
 ```
+
+`~/.codex/skills` 의 skill 을 프로필로 동기화:
+
+```sh
+codex-switch sync-skills work humanizer .system/imagegen
+codex-switch sync-skills personal --all-skills
+codex-switch sync-skills --all --all-skills
+```
+
+`sync-skills` 는 skills 만 복사합니다. 대상 프로필에 같은 이름의 skill 이 있으면 먼저 교체합니다. 다른 skill 은 그대로 둡니다. 인증, 설정, sessions, cache, plugins, vendor imports 는 복사하지 않습니다.
 
 프로필 아래에서 Codex 실행:
 

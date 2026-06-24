@@ -54,6 +54,8 @@ func (a *App) Run(args []string) error {
 		return a.runLogin(args[1:])
 	case "import-auth":
 		return a.runImportAuth(args[1:])
+	case "sync-skills":
+		return a.runSyncSkills(args[1:])
 	case "env":
 		return a.runEnv(args[1:])
 	case "aliases":

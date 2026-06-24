@@ -16,6 +16,7 @@ Usage:
   codex-switch run [<profile>] [-- command args...]
   codex-switch login [<profile>] [--copy-from-current] [-- command args...]
   codex-switch import-auth <profile> [--from path]
+  codex-switch sync-skills [<profile>|--all] [<skill> ...|--all-skills]
   codex-switch env [<profile>] [--shell sh|bash|zsh|fish]
   codex-switch aliases [--shell bash|zsh|fish]
   codex-switch init-shell [--shell bash|zsh|fish] [--rc-file path]
@@ -28,6 +29,8 @@ Examples:
   codex-switch login work
   codex-switch login personal --copy-from-current
   codex-switch import-auth personal --from ~/.codex/auth.json
+  codex-switch sync-skills work humanizer .system/imagegen
+  codex-switch sync-skills --all --all-skills
   codex-switch status
   codex-switch doctor
   codex-switch init-shell --shell zsh
