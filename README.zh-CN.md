@@ -139,6 +139,7 @@ codex-switch set-default <name>
 codex-switch run [<profile>] [-- command args...]
 codex-switch login [<profile>] [--copy-from-current] [-- command args...]
 codex-switch import-auth <profile> [--from path]
+codex-switch sync-skills [<profile>|--all] [<skill> ...|--all-skills]
 codex-switch env [<profile>] [--shell sh|bash|zsh|fish]
 codex-switch aliases [--shell bash|zsh|fish]
 codex-switch init-shell [--shell bash|zsh|fish] [--rc-file path]
@@ -170,6 +171,16 @@ codex-switch login personal --copy-from-current
 codex-switch import-auth work --from ~/.codex/auth.json
 codex-switch import-auth personal --from /path/to/old-codex-home
 ```
+
+把 `~/.codex/skills` 里的 skill 同步到 profile：
+
+```sh
+codex-switch sync-skills work humanizer .system/imagegen
+codex-switch sync-skills personal --all-skills
+codex-switch sync-skills --all --all-skills
+```
+
+`sync-skills` 只复制 skills。目标 profile 里已有同名 skill 时，会先替换它；其他 skill 保持不变。认证、配置、sessions、cache、plugins 和 vendor imports 不会被复制。
 
 在指定 profile 下运行 Codex：
 

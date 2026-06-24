@@ -139,6 +139,7 @@ codex-switch set-default <name>
 codex-switch run [<profile>] [-- command args...]
 codex-switch login [<profile>] [--copy-from-current] [-- command args...]
 codex-switch import-auth <profile> [--from path]
+codex-switch sync-skills [<profile>|--all] [<skill> ...|--all-skills]
 codex-switch env [<profile>] [--shell sh|bash|zsh|fish]
 codex-switch aliases [--shell bash|zsh|fish]
 codex-switch init-shell [--shell bash|zsh|fish] [--rc-file path]
@@ -170,6 +171,16 @@ codex-switch login personal --copy-from-current
 codex-switch import-auth work --from ~/.codex/auth.json
 codex-switch import-auth personal --from /path/to/old-codex-home
 ```
+
+`~/.codex/skills` から profile に skill を同期する:
+
+```sh
+codex-switch sync-skills work humanizer .system/imagegen
+codex-switch sync-skills personal --all-skills
+codex-switch sync-skills --all --all-skills
+```
+
+`sync-skills` がコピーするのは skills だけです。対象 profile に同名 skill がある場合は先に置き換えます。他の skill はそのまま残ります。認証、設定、sessions、cache、plugins、vendor imports はコピーしません。
 
 指定 profile で Codex を実行する:
 

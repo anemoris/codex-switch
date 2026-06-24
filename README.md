@@ -139,6 +139,7 @@ codex-switch set-default <name>
 codex-switch run [<profile>] [-- command args...]
 codex-switch login [<profile>] [--copy-from-current] [-- command args...]
 codex-switch import-auth <profile> [--from path]
+codex-switch sync-skills [<profile>|--all] [<skill> ...|--all-skills]
 codex-switch env [<profile>] [--shell sh|bash|zsh|fish]
 codex-switch aliases [--shell bash|zsh|fish]
 codex-switch init-shell [--shell bash|zsh|fish] [--rc-file path]
@@ -170,6 +171,16 @@ Import an existing auth file into a profile:
 codex-switch import-auth work --from ~/.codex/auth.json
 codex-switch import-auth personal --from /path/to/old-codex-home
 ```
+
+Sync skills from `~/.codex/skills` into a profile:
+
+```sh
+codex-switch sync-skills work humanizer .system/imagegen
+codex-switch sync-skills personal --all-skills
+codex-switch sync-skills --all --all-skills
+```
+
+`sync-skills` copies skills only. If the target profile already has a skill with the same name, that skill is replaced first. Other skills in the target profile stay as they are. Auth, config, sessions, cache, plugins, and vendor imports are not copied.
 
 Run Codex under a profile:
 
